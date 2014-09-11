@@ -2,9 +2,16 @@
 	"name": "pageShot",
 	"version": "0.1",
 	"manifest_version" : 2,
-	"description": "pageShot addon",
+	"description" : "pageShot addon",
+	"background" : {
+		"scripts" : ["run.js"]
+	},
 	"browser_action" : {
 		"default_icon" : "icon.png",
-		"popup" : "popup.html"
-	}
+		"default_popup" : "popup.html"
+	},
+	"permissions" : [
+		"tabs"
+//		"http://*"
+	]
 }
