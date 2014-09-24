@@ -1,0 +1,240 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Insert title here</title>
+		<style type='text/css'>
+			
+			body{
+				margin:0;
+				padding:0;
+				font-size:12px;
+			}
+			
+			/** 提示框CSS **/
+			.drawInstance{
+				position:relative;
+			}
+			
+			.attrPanel{
+				position:relative;
+				padding:5px;
+				border:1px solid #c1c1c1;
+				width:125px;
+			}
+			
+			.attrItem{
+				position:relative;
+				padding:2px 5px;
+			}
+			
+			.attrKey , .attrValue , .attrUnit{
+				position:relative;
+				float:right;
+			}
+			
+			.attrValue{
+				width:20px;
+				text-align:right;
+				margin-right:5px;
+			}
+			
+			.attrUnit{
+				width:30px;
+			}
+			
+			.clear_float{
+				clear:both;
+			}
+			/** 提示框CSS **/
+			
+			
+			
+			
+		</style>
+	</head>
+	<script type='text/javascript' src='jquery.js'></script>
+  	<script type="text/javascript" src="Box2dWeb-2.1.a.3.min.js"></script>
+	<script type='text/javascript' src='html2canvas.js'></script>
+	<script type='text/javascript' src='TJ.js'></script>
+	<script type='text/javascript' src='TJWorld.js'></script>
+	<script type='text/javascript'>
+		var imageData = false;
+		function showTips(x , y){
+			
+			var r = 3 , distance = 20 , angle = 45;
+			
+			var point1 = {
+				x : x,
+				y : y
+			};
+			var point2 = {
+				x : point1.x + Math.sin(angle*Math.PI/180)*distance,
+				y : point1.y - Math.cos(angle*Math.PI/180)*distance
+			};
+			
+			
+			
+			var context = document.getElementById('canvas').getContext('2d');
+			
+//			console.log(context);
+			
+			context.strokeStyle ='#c1c1c1';//线条颜色
+			context.fillStyle = '#999';
+			context.lineWidth = 1;
+			
+			context.beginPath();
+			context.arc(point1.x , point1.y , 2 , 0 , 360 , true); //x , y , r , beginAngle(X轴正方向为起点) , endAngle , 是否顺时针
+			context.fill();
+			context.closePath();
+			
+			
+			//画线
+			context.beginPath();
+			context.moveTo(x, y);
+			context.lineTo( point2.x , point2.y );
+			context.stroke();
+			context.closePath();
+			
+			if($('#attrPanelPic').attr('src')){
+//				console.log('y',point2);
+//console.log('cache');
+//				console.log(canvas.height);
+				document.getElementById('canvas').getContext('2d').drawImage($('#attrPanelPic')[0] , point2.x ,  point2.y - $('#attrPanelPic').height()+ 1 );
+//				console.log(2);
+				return;
+			}
+			
+			
+			
+			html2canvas(document.getElementById('attrPanel') , {
+				
+				onrendered : function(canvas){
+//					imageData = canvas.getContext('2d').getImageData(0 , 0 , canvas.width , canvas.height);
+					$('#attrPanelPic').attr('src' , canvas.toDataURL());
+//console.log($('#attrPanelPic'));
+//console.log('render');
+//					console.log('x',point2);
+					document.getElementById('canvas').getContext('2d').drawImage($('#attrPanelPic')[0] , point2.x ,  point2.y - $('#attrPanelPic').height() + 1 );
+				}
+				
+			});
+		}
+		
+		
+		$(document).ready(function(){
+			
+			var _stage = new TJStage({canvasObject : document.getElementById('canvas')});
+			
+			window._stage = _stage;
+			
+			var _world = new TJWorld({
+				width : 1200,
+				height : 500,
+				x:0,
+				y:0,
+//				restitution : 1,
+//				friction : 0,
+				gravity : 9.8
+			});
+			
+			_stage.addWorld(_world);
+			
+			var fuliController = _world.addBuoyancyController(200 , 1 , 5 , 3 , 'fuli1');
+			
+			for(var i = 1 ; i < 10 ; i++){
+				
+				var box = _world.addBox({
+					width : 40 , 
+					height : 20 , 
+					locationX : 100*(i+1),
+					locationY : 350,
+					angle : 45,
+					friction : 0.6,
+					density : i/5 , 
+					showTips : i==1?true : false
+				});
+				
+				_world.addControlStack( 'fuli1' , box);
+				
+			}
+			
+			
+			$('#canvas').mousedown(function(e){
+					
+				var _e = new TJEvent.EventObject('world_mouse_down');
+				_e.data.x = e.clientX;
+				_e.data.y = e.clientY;
+				TJEvent.dispatch(_e);
+				
+			});
+			
+			$('#canvas').mousemove(function(e){
+				
+				var _e = new TJEvent.EventObject('world_mouse_move');
+				_e.data.x = e.clientX;
+				_e.data.y = e.clientY;
+				TJEvent.dispatch(_e);
+				
+			});
+			
+			$('#canvas').mouseup(function(e){
+				
+				var _e = new TJEvent.EventObject('world_mouse_up');
+				_e.data.x = e.clientX;
+				_e.data.y = e.clientY;
+				TJEvent.dispatch(_e);
+				
+			});
+			
+			
+					
+			
+		});
+		
+
+		
+		
+		
+			
+//			var body1 = _world.addCircle(22, 100 , 100 , document.getElementById('red'));
+//			var body2 = _world.addCircle(22, 200 , 200 , document.getElementById('red'));
+
+//			_world.addDistanceJoint(body1 , body2);
+			
+		
+	</script>
+<body>
+	<canvas id='canvas' width='1600px' height='700px' style='' ></canvas>
+	<canvas id='canvas2' width='300px' height='200px' style='' ></canvas>
+	<div class='object_pics' style=''>
+		<img src='red.png' id='red'></img>
+		<img src='yellow.png' id='yellow'></img>
+		<img src='slide.png' id='slide'></img>
+		<img data='' id='attrPanelPic'></img>
+	</div>
+	
+	<div class='drawInstance' style='position:absolute;top:-0px;opacity:0.01;'>
+		<div id='attrPanel' class='attrPanel'>
+			<div class='attrItem'>
+				<div class='attrUnit'>m/s</div>
+				<div class='attrValue'>10</div>
+				<div class='attrKey'>速度：</div>
+				<div class='clear_float'></div>
+			</div>
+			<div class='attrItem'>
+				<div class='attrUnit'>kg/m³</div>
+				<div class='attrValue'>10</div>
+				<div class='attrKey'>密度：</div>
+				<div class='clear_float'></div>
+			</div>
+			<div class='attrItem'>
+				<div class='attrUnit'>μ</div>
+				<div class='attrValue'>10</div>
+				<div class='attrKey'>摩擦系数：</div>
+				<div class='clear_float'></div>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>

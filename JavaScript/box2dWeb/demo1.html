@@ -1,0 +1,199 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Insert title here</title>
+		<style type='text/css'>
+			
+			body{
+				margin:0;
+				padding:0;
+			}
+			
+		</style>
+	</head>
+	<script type='text/javascript' src='jquery.js'></script>
+  	<script type="text/javascript" src="Box2dWeb-2.1.a.3.min.js"></script>
+	<script type='text/javascript' src='TJ.js'></script>
+	<script type='text/javascript' src='TJWorld.js'></script>
+	<script type='text/javascript'>
+		
+		
+		$(document).ready(function(){
+			
+			var _stage = new TJStage({canvasObject : document.getElementById('canvas')});
+			
+			var _world = new TJWorld({
+				width : 1200,
+				height : 500,
+				x:0,
+				y:0,
+//				restitution : 1,
+//				friction : 0,
+//				gravity : 0
+			});
+			
+			_stage.addWorld(_world);
+			
+//			var body1 = _world.addCircle(22, 100 , 100 , document.getElementById('red'));
+//			var body2 = _world.addCircle(22, 200 , 200 , document.getElementById('red'));
+
+//			_world.addDistanceJoint(body1 , body2);
+			
+			_world.addVertices({
+				vertices : [[-100,-50],[100,50],[-100,50]]  ,
+				locationX : 100,
+				locationY : 450,
+				friction : 0.1,
+				density : 0.1,
+				restitution : 1,
+				type : _world.box2dObject.Body.b2_staticBody
+				
+			});
+			
+			_world.addVertices({
+				vertices : [[-100,-50],[100,50],[-100,50]]  ,
+				locationX : 700,
+				locationY : 450,
+				friction : 0.4,
+				density : 1,
+				restitution : 0,
+				type : _world.box2dObject.Body.b2_staticBody
+				
+			});
+		
+			
+			$('#canvas').mousedown(function(e){
+				
+				var _e = new TJEvent.EventObject('world_mouse_down');
+				_e.data.x = e.clientX;
+				_e.data.y = e.clientY;
+				TJEvent.dispatch(_e);
+				
+			});
+			
+			$('#canvas').mousemove(function(e){
+				
+				var _e = new TJEvent.EventObject('world_mouse_move');
+				_e.data.x = e.clientX;
+				_e.data.y = e.clientY;
+				TJEvent.dispatch(_e);
+				
+			});
+			
+			$('#canvas').mouseup(function(e){
+				
+				var _e = new TJEvent.EventObject('world_mouse_up');
+				_e.data.x = e.clientX;
+				_e.data.y = e.clientY;
+				TJEvent.dispatch(_e);
+				
+			});
+			
+			$('#red_bird').click(function(){
+				_world.addCircle({
+					r : 24 , 
+					locationX : Math.random()*_world._setting.width , 
+					locationY : Math.random()*_world._setting.height , 
+					speedX : Math.random()*20,
+					speedY : -Math.random()*40,
+					image : document.getElementById('red')
+				});
+			});
+			
+			$('#yellow_bird').click(function(){
+					
+				_world.addVertices({
+					vertices : [[-29,27],[0,-27],[29,27]]  ,
+					locationX : Math.random()*_world._setting.width ,
+					locationY : Math.random()*_world._setting.height , 
+					speedX : Math.random()*20,
+					speedY : -Math.random()*40,
+					image : document.getElementById('yellow')
+				});
+		
+//				_world.addBox( 58 , 54 , Math.random()*_world._setting.width , Math.random()*_world._setting.height , document.getElementById('yellow'));
+
+				
+			});
+			
+			$('#slide_item').click(function(){
+				_world.addBox({
+					width : 205 , 
+					height : 20 , 
+					locationX : Math.random()*_world._setting.width , 
+					locationY : Math.random()*_world._setting.height , 
+					speedX : Math.random()*20,
+					speedY : -Math.random()*40,
+					image : document.getElementById('slide')
+				});
+			});
+			
+			$('#add_ver').click(function(){
+				
+				_world.addVertices({
+					vertices : [[-100,-100],[100,100],[-100,100]]  ,
+					locationX : 500,
+					locationY : 100,
+					friction : 1
+					
+				});
+				
+			});
+			
+			$('#add_box').click(function(){
+				
+				_world.addBox({
+					width : 40 , 
+					height : 20 , 
+					locationX : Math.random()*_world._setting.width , 
+					locationY : Math.random()*_world._setting.height , 
+					angle : 45,
+					friction : 1
+				});
+				
+			});
+			
+			$('#begin').click(function(){
+				
+				_world.addBox({
+					width : 40 , 
+					height : 20 , 
+					locationX : 100,
+					locationY : 450,
+					angle : 45,
+					friction : 0.1,
+					density : 0.1
+				});
+				
+				_world.addBox({
+					width : 40 , 
+					height : 20 , 
+					locationX : 700,
+					locationY : 450,
+					angle : 45,
+					friction : 0.4,
+					density : 1
+				});
+				
+			});
+			
+		});
+		
+	</script>
+<body>
+	<div style='position:absolute;'>
+		<input id='red_bird' type='button' value='小红鸟'></input>
+		<input id='yellow_bird' type='button' value='小黄鸟'></input>
+		<input id='slide_item' type='button' value='挡板'></input>
+		<input id='add_box' type='button' value='方块'></input>
+		<input id='add_ver' type='button' value='三角形'></input>
+		<input id='begin' type='button' value='开始'></input>
+	</div>
+	<canvas id='canvas' width='1600px' height='800px' style='' ></canvas>
+	<div class='object_pics' style='display:none;'>
+		<img src='red.png' id='red'></img>
+		<img src='yellow.png' id='yellow'></img>
+		<img src='slide.png' id='slide'></img>
+	</div>
+</body>
+</html>
