@@ -1,0 +1,96 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+</head>
+<body>
+<h1>${title}</h1>
+<script type="text/javascript">
+
+    var mixin = function(){
+        var target = arguments[0];
+
+        for(var i = 1, len = arguments.length ; i < len ; i++){
+
+            var src = arguments[i];
+
+            for(var property in src){
+                if(typeof src[property] == 'object'){
+
+                    target[property] = this.clone(src[property])
+
+                }else if(typeof src[property] == 'function'){
+
+                    target[property] = this.hitch(target , src[property]);
+                }else{
+                    target[property] = src[property];
+                }
+            }
+        }
+
+        return target;
+
+    };
+
+    var classBase = {
+
+        inherited : function(arg){
+            var name = arg.callee.name;
+            if(!name){
+                for(var i in this){
+                    if(this[i] == arg.callee){
+                        name = i;
+                        break;
+                    }
+                }
+            }
+
+            if(name){
+                return this.constructor.prototype[name].apply(this.constructor.prototype , arg);
+            }else{
+                return true;
+            }
+
+        }
+
+    };
+
+
+    var Car = function(){
+        this.start = function(){
+            console.log('car is start');
+        }
+        this.constructor = Car;
+    };
+    Car.prototype = classBase;
+//    Car.prototype.constructor = Car;
+
+    var BenzCar = function(){
+        this.start = function(){
+            console.log('benz welcome');
+            this.inherited(arguments);
+        }
+        this.constructor = BenzCar;
+    };
+    BenzCar.prototype = new Car();
+//    BenzCar.prototype.constructor = BenzCar;
+
+    var C200 = function(){
+        this.start = function(){
+            console.log('this is C200');
+            this.inherited(arguments);
+        }
+
+        this.constructor = C200;
+    };
+    C200.prototype = new BenzCar();
+//    C200.prototype.constructor = C200;
+
+
+    var car = new C200();
+    car.start();
+
+</script>
+<form action="/uploadFile" enctype="multipart/form-data" method="post"><input type="text" name="title"><br><input
+        type="file" name="upload" multiple="multiple"><br><input type="submit" value="Upload"></form>
+</body>
+</html>

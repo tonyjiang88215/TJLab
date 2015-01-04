@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript">
+
+        var hitch = function(scope , method){
+            return function(){
+                return method.apply(scope , arguments);
+            }
+        };
+
+        var ObjectBase = function(){
+
+            var _prototype;
+            this.inherited = function(){
+                return (function(_this , _proto , arg){
+                    var name = arg.callee.name;
+                    if(!name){
+                        for(var i in _this){
+                            if(_this[i] == arg.callee){
+                                name = i;
+                                break;
+                            }
+                        }
+                    }
+                    if(name && _proto[name]){
+                        _proto[name].apply(_this , arg);
+                        return arguments.callee.call(window , _this , _proto.constructor.prototype , arg);
+                    }else{
+                        return true;
+                    }
+                })(this , this.constructor.prototype , arguments[0]);
+
+            }
+        }
+
+        Function.prototype.extend = function(){
+            this.prototype = new arguments[0];
+            return hitch(this , function(){
+                var o = new this();
+                o.constructor = this;
+                return o;
+            });
+        };
+
+        var Car = function(){
+            this.start = function(){
+                console.log('car is start');
+            }
+        };
+        Car = Car.extend(ObjectBase);
+
+        var BenzCar = function(){
+            this.start = function(){
+                console.log('benz welcome');
+                this.inherited(arguments);
+            }
+        };
+        BenzCar = BenzCar.extend(Car);
+
+        var C200 = function(){
+            this.start = function(){
+                console.log('this is C200');
+                this.inherited(arguments);
+            }
+
+        };
+        C200 = C200.extend(BenzCar);
+
+        var car = new C200();
+        car.start();
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>
