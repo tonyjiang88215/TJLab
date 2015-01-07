@@ -2,6 +2,7 @@
  * Created by tonyjiang on 14/12/12.
  */
 var base = require('./base');
+require('./extends');
 
 //原型定义(静态方法)
 function DisplayPrototype(){
@@ -99,8 +100,9 @@ function Module(){
 
 
 }
-Module.prototype = new DisplayPrototype();
-Module.prototype.constructor = Module;
+Module = Module.extend(DisplayPrototype);
+//Module.prototype = new DisplayPrototype();
+//Module.prototype.constructor = Module;
 
 //html 头部
 function Header(){
@@ -158,22 +160,25 @@ console.log(this.constructor == Header);
     }
 
 }
-Header.prototype =  new DisplayPrototype();
-Header.prototype.constructor = Header;
+Header = Header.extend(DisplayPrototype);
+//Header.prototype =  new DisplayPrototype();
+//Header.prototype.constructor = Header;
 
 //html Body体
 function Body(){
 
 }
-Body.prototype =  new DisplayPrototype();
-Body.prototype.constructor = Body;
+Body = Body.extend(DisplayPrototype);
+//Body.prototype =  new DisplayPrototype();
+//Body.prototype.constructor = Body;
 
 //html 尾部
 function Footer(){
 
 }
-Footer.prototype =  new DisplayPrototype();
-Footer.prototype.constructor = Footer;
+Footer = Footer.extend(DisplayPrototype);
+//Footer.prototype =  new DisplayPrototype();
+//Footer.prototype.constructor = Footer;
 
 
 function Display(config){
@@ -193,7 +198,5 @@ function Display(config){
     };
 
 }
-Display.prototype =  new DisplayPrototype();
-Display.prototype.constructor = Display;
 
 module.exports = Display;
