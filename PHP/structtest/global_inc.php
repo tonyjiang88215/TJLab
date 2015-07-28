@@ -2,7 +2,8 @@
 
 if(PATH_SEPARATOR==':')
 {
-	ini_set('include_path','.:/var/www/phplib/share/pear:/data/nginx/struct');//linux
+    ini_set('include_path' , ini_get('include_path') . dirname(__FILE__));
+//	ini_set('include_path','.:/var/www/phplib/share/pear:/data/nginx/struct');//linux
 }
 else
 {

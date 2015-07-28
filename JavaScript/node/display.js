@@ -1,8 +1,8 @@
 /**
  * Created by tonyjiang on 14/12/12.
  */
-var base = require('./base');
-require('./extends');
+var base = require('./util');
+require('./_Extends');
 
 //原型定义(静态方法)
 function DisplayPrototype(){
