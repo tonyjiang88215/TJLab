@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>8886B9A8-6076-4C58-BE7B-D3C77D98D316</string>
+	<key>IDESourceControlProjectName</key>
+	<string>project</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>6FC6B83CC24B00F3AC5B1A5378200E8C48425353</key>
+		<string>https://github.com/tonyjiang88215/TJLab.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>ios/HelloWorld/HelloWorld.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>6FC6B83CC24B00F3AC5B1A5378200E8C48425353</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/tonyjiang88215/TJLab.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>6FC6B83CC24B00F3AC5B1A5378200E8C48425353</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>6FC6B83CC24B00F3AC5B1A5378200E8C48425353</string>
+			<key>IDESourceControlWCCName</key>
+			<string>TJLab</string>
+		</dict>
+	</array>
+</dict>
+</plist>

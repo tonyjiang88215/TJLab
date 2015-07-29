@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="AdaptiveWeather" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0pZ-xs-zfZ" userLabel="TextContainer">
+                                <rect key="frame" x="16" y="237" width="568" height="363"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Cloud" translatesAutoresizingMaskIntoConstraints="NO" id="eCD-22-hdO">
+                                <rect key="frame" x="150" y="20" width="300" height="197"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.092607154905458566" green="0.64947660064455481" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="0pZ-xs-zfZ" secondAttribute="trailing" id="CAz-Ku-Fzi"/>
+                            <constraint firstAttribute="centerX" secondItem="eCD-22-hdO" secondAttribute="centerX" id="JTp-DR-qAp"/>
+                            <constraint firstItem="0pZ-xs-zfZ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="ba8-Gt-bR5"/>
+                            <constraint firstItem="0pZ-xs-zfZ" firstAttribute="top" secondItem="eCD-22-hdO" secondAttribute="bottom" constant="20" id="ng9-1s-yki"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="0pZ-xs-zfZ" secondAttribute="bottom" id="rji-Z5-LxN"/>
+                            <constraint firstItem="eCD-22-hdO" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="tnn-bC-FAm"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="408" y="86"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Cloud" width="300" height="197"/>
+    </resources>
+</document>

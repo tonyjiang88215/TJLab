@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2014 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html class="ui-mobile">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <title>Hello World</title>
+        <script type="text/javascript" src="js/cordova.js"></script>
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" charset="utf-8">
+
+            var pictureSource;   // picture source
+            var destinationType; // sets the format of returned value
+
+            // Wait for Cordova to connect with the device
+            //
+            document.addEventListener("deviceready",onDeviceReady,false);
+
+            // Cordova is ready to be used!
+            //
+            function onDeviceReady() {
+                pictureSource=navigator.camera.PictureSourceType;
+                destinationType=navigator.camera.DestinationType;
+            }
+            function checkConnection() {
+                var networkState = navigator.network.connection.type;
+
+                var states = {};
+                states[Connection.UNKNOWN]  = 'Unknown connection';
+                states[Connection.ETHERNET] = 'Ethernet connection';
+                states[Connection.WIFI]     = 'WiFi connection';
+                states[Connection.CELL_2G]  = 'Cell 2G connection';
+                states[Connection.CELL_3G]  = 'Cell 3G connection';
+                states[Connection.CELL_4G]  = 'Cell 4G connection';
+                states[Connection.NONE]     = 'No network connection';
+
+                alert('Connection type: ' + states[networkState]);
+            }
+            function onSuccess(acceleration) {
+                alert('Acceleration X: ' + acceleration.x + '\n' +
+                'Acceleration Y: ' + acceleration.y + '\n' +
+                'Acceleration Z: ' + acceleration.z + '\n' +
+                'Timestamp: '      + acceleration.timestamp + '\n');
+            }
+
+            // onError: Failed to get the acceleration
+            //
+            function onError() {
+                alert('onError!');
+            }
+            // Called when a photo is successfully retrieved
+            //
+            function onPhotoDataSuccess(imageData) {
+                // Uncomment to view the base64 encoded image data
+                // console.log(imageData);
+
+                // Get image handle
+                //
+                var smallImage = document.getElementById('smallImage');
+
+                // Unhide image elements
+                //
+                smallImage.style.display = 'block';
+
+                // Show the captured photo
+                // The inline CSS rules are used to resize the image
+                //
+                smallImage.src = "data:image/jpeg;base64," + imageData;
+            }
+
+            // Called when a photo is successfully retrieved
+            //
+            function onPhotoURISuccess(imageURI) {
+                // Uncomment to view the image file URI
+                // console.log(imageURI);
+
+                // Get image handle
+                //
+                var largeImage = document.getElementById('largeImage');
+
+                // Unhide image elements
+                //
+                largeImage.style.display = 'block';
+
+                // Show the captured photo
+                // The inline CSS rules are used to resize the image
+                //
+                largeImage.src = imageURI;
+            }
+
+            // A button will call this function
+            //
+            function capturePhoto() {
+                // Take picture using device camera and retrieve image as base64-encoded string
+                navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 50,
+                    destinationType: destinationType.DATA_URL });
+            }
+
+            // A button will call this function
+            //
+            function GetAcceleration()
+            {
+                navigator.accelerometer.getCurrentAcceleration(onSuccess, onError);
+            }
+            function capturePhotoEdit() {
+                // Take picture using device camera, allow edit, and retrieve image as base64-encoded string
+                navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 20, allowEdit: true,
+                    destinationType: destinationType.DATA_URL });
+            }
+
+            // A button will call this function
+            //
+            function getPhoto(source) {
+                // Retrieve image file location from specified source
+                navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
+                    destinationType: destinationType.FILE_URI,
+                    sourceType: source });
+            }
+
+            // Called if something bad happens.
+            //
+            function onFail(message) {
+                alert('Failed because: ' + message);
+            }
+            function Exit()
+            {
+                alert("exit : "  , navigator.app);
+                navigator.app.exitApp();
+            }
+
+            console.log("define finished");
+        </script>
+    </head>
+    <body >
+    <section id="homepage" data-role="page">
+        <header data-role="header">
+            <h1>Homepage</h1>
+        </header>
+        <div class="content" data-role="content">
+            <p>This is a JqueryMoblie with PhoneGap example, click the button below operating</p></br>
+            <a href="#secondpage" data-role="button">Start</a>
+            <button data-role="button" onclick="Exit();">Exit</button>
+        </div>
+    </section>
+    <section id="secondpage" data-role="page">
+        <header data-role="header">
+            <h1>SecondPage</h1>
+        </header>
+        <div class="content" data-role="content">
+            <p>On this page, you can obtain the acceleration of the mobile phone in the x, y, and z directions, click the button below to try it</p></br>
+            <a href="#homepage" data-role="button">PreviosPage</a>
+            <button   data-role="button" onclick = "GetAcceleration()">GetAcceleration</button>
+            <a href="#thirdpage" data-role="button">NextPage</a>
+            <button data-role="button" onclick="Exit();">Exit</button>
+        </div>
+    </section>
+    <section id="thirdpage" data-role="page">
+        <header data-role="header">
+            <h1>ThirdPage</h1>
+        </header>
+        <div class="content" data-role="content">
+            <p>On this page, you can take a picture or you can get on the phone photos,
+                </br>the photos will be displayed on this page, click the button below to try it</p></br>
+            <a href="#secondpage" data-role="button">PreviousPage</a>
+            <button   data-role="button" onclick="capturePhoto();">Capture Photo</button>
+            <button  data-role="button" onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button>
+            <img style="display:none;width:260px;height:260px;" id="smallImage" src="" />
+            <img style="display:none;" id="largeImage" src="" />
+            <a href="#forthpage" data-role="button">NextPage</a>
+            <button data-role="button" onclick="Exit();">Exit</button>
+        </div>
+    </section>
+    <section id="forthpage" data-role="page">
+        <header data-role="header">
+            <h1>Forthpage</h1>
+        </header>
+        <div class="content" data-role="content">
+            <p>On this page, you can check the network status, click the button below to try it</p></br>
+            <a href="#thirdpage" data-role="button">PreviousPage</a>
+            <button  data-role="button" onclick="checkConnection();">CheckConnection</button>
+            <a href="#homepage" data-role="button">BacktoHomepage</a>
+            <button data-role="button" onclick="Exit();">Exit</button>
+        </div>
+    </section>
+
+    <!--<div class="app">-->
+            <!--<h1>Hello 赵小景</h1>-->
+            <!--<div id="deviceready" class="blink">-->
+                <!--<p class="event listening">Connecting to Device</p>-->
+                <!--<p class="event received">Device is Ready~~</p>-->
+            <!--</div>-->
+            <!--<input class="btn" type="button" value="click me" />-->
+            <!--<div class="hidden" style="display: none;">i am hidden</div>-->
+        <!--</div>-->
+        <!--<script type="text/javascript" src="cordova.js"></script>-->
+        <!--<script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js.js"></script>-->
+        <!--<script type="text/javascript" src="js/index.js"></script>-->
+        <!--<script type="text/javascript">-->
+            <!--app.initialize();-->
+            <!--alert('111111');-->
+        <!--</script>-->
+    </body>
+</html>
