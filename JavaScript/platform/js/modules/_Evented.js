@@ -3,6 +3,8 @@
  */
 define(function(){
 
+    var _globalHandler = {};
+
     var _Evented = function(){
 
         var _handler = {};
@@ -30,7 +32,6 @@ define(function(){
         };
 
         this.emit = function(event , eventContent){
-            console.log(event);
             if(!_handler[event]){
                 return false;
             }
@@ -38,9 +39,34 @@ define(function(){
             for(var i = 0, len = _handler[event].length ; i < len ; i++){
                 try{
                     _handler[event][i](eventContent);
-                }catch(e){}
+                }catch(e){
+                    console.log(e);
+                }
             }
 
+        };
+
+    };
+
+    _Evented.subscribe = function(event , eventHandler){
+        if(!_globalHandler[event]){
+            _globalHandler[event] = [];
+        }
+
+        _globalHandler[event].push(eventHandler);
+    };
+
+    _Evented.publish = function(event , eventContent){
+        if(!_globalHandler[event]){
+            return false;
+        }
+
+        for(var i = 0, len = _globalHandler[event].length ; i < len ; i++){
+            try{
+                _globalHandler[event][i](eventContent);
+            }catch(e){
+                console.log(e);
+            }
         }
     };
 

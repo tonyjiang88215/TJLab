@@ -29,7 +29,8 @@
             cssPath : webRoot+'/css',
             vmPath: webRoot+'/vm',
             //jQuery
-            jquery : 'lib/jquery'
+            jquery : 'lib/jquery',
+            jqueryui : 'lib/jquery-ui-1.11.4/jquery-ui'
         },
         //urlArgs : version.version
         urlArgs : "bust="+(new Date().getTime())
