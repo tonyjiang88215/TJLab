@@ -1,0 +1,19 @@
+.input {
+  width: 2rem;
+  border: 1px solid #ddd;
+}
+
+[data-dpr="1"] .input {
+  height: 32px;
+  font-size: 14px;
+}
+
+[data-dpr="2"] .input {
+  height: 64px;
+  font-size: 28px;
+}
+
+[data-dpr="3"] .input {
+  height: 96px;
+  font-size: 42px;
+}

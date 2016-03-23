@@ -1,0 +1,6 @@
+body{
+  background: yellow;
+}
+
+.bg1{height:200px;width:200px;background: url('../images/bg1.jpg?__sprite');}
+.bg2{height:200px;width:200px;background: url('../images/bg2.jpg?__sprite');}

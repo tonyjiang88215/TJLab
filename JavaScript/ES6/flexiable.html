@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--<script type="text/javascript" src="http://www.w3cplus.com/sites/default/files/blogs/2016/1601/flexible.js"/>-->
+
+    <style type="text/css">
+        body{margin:0;padding:0;}
+        .item1{width:200px;height:80px;background: red;}
+    </style>
+    <script type="text/javascript">
+        ;(function(win, lib) {
+            var doc = win.document;
+            var docEl = doc.documentElement;
+            var metaEl = doc.querySelector('meta[name="viewport"]');
+            var flexibleEl = doc.querySelector('meta[name="flexible"]');
+            var dpr = 0;
+            var scale = 0;
+            var tid;
+            var flexible = lib.flexible || (lib.flexible = {});
+
+            if (metaEl) {
+                console.warn('将根据已有的meta标签来设置缩放比例');
+                var match = metaEl.getAttribute('content').match(/initial\-scale=([\d\.]+)/);
+                if (match) {
+                    scale = parseFloat(match[1]);
+                    dpr = parseInt(1 / scale);
+                }
+            } else if (flexibleEl) {
+                var content = flexibleEl.getAttribute('content');
+                if (content) {
+                    var initialDpr = content.match(/initial\-dpr=([\d\.]+)/);
+                    var maximumDpr = content.match(/maximum\-dpr=([\d\.]+)/);
+                    if (initialDpr) {
+                        dpr = parseFloat(initialDpr[1]);
+                        scale = parseFloat((1 / dpr).toFixed(2));
+                    }
+                    if (maximumDpr) {
+                        dpr = parseFloat(maximumDpr[1]);
+                        scale = parseFloat((1 / dpr).toFixed(2));
+                    }
+                }
+            }
+
+            if (!dpr && !scale) {
+                var isAndroid = win.navigator.appVersion.match(/android/gi);
+                var isIPhone = win.navigator.appVersion.match(/iphone/gi);
+                var devicePixelRatio = win.devicePixelRatio;
+                if (isIPhone) {
+                    // iOS下，对于2和3的屏，用2倍的方案，其余的用1倍方案
+                    if (devicePixelRatio >= 3 && (!dpr || dpr >= 3)) {
+                        dpr = 3;
+                    } else if (devicePixelRatio >= 2 && (!dpr || dpr >= 2)){
+                        dpr = 2;
+                    } else {
+                        dpr = 1;
+                    }
+                } else {
+                    // 其他设备下，仍旧使用1倍的方案
+                    dpr = 1;
+                }
+                scale = 1 / dpr;
+            }
+
+            docEl.setAttribute('data-dpr', dpr);
+            if (!metaEl) {
+                metaEl = doc.createElement('meta');
+                metaEl.setAttribute('name', 'viewport');
+                metaEl.setAttribute('content', 'initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no');
+                if (docEl.firstElementChild) {
+                    docEl.firstElementChild.appendChild(metaEl);
+                } else {
+                    var wrap = doc.createElement('div');
+                    wrap.appendChild(metaEl);
+                    doc.write(wrap.innerHTML);
+                }
+            }
+
+            function refreshRem(){
+                var width = docEl.getBoundingClientRect().width;
+                if (width / dpr > 540) {
+                    width = 540 * dpr;
+                }
+                var rem = width / 10;
+                docEl.style.fontSize = rem + 'px';
+                flexible.rem = win.rem = rem;
+            }
+
+            win.addEventListener('resize', function() {
+                clearTimeout(tid);
+                tid = setTimeout(refreshRem, 300);
+            }, false);
+            win.addEventListener('pageshow', function(e) {
+                if (e.persisted) {
+                    clearTimeout(tid);
+                    tid = setTimeout(refreshRem, 300);
+                }
+            }, false);
+
+            if (doc.readyState === 'complete') {
+                doc.body.style.fontSize = 12 * dpr + 'px';
+            } else {
+                doc.addEventListener('DOMContentLoaded', function(e) {
+                    doc.body.style.fontSize = 12 * dpr + 'px';
+                }, false);
+            }
+
+
+            refreshRem();
+
+            flexible.dpr = win.dpr = dpr;
+            flexible.refreshRem = refreshRem;
+            flexible.rem2px = function(d) {
+                var val = parseFloat(d) * this.rem;
+                if (typeof d === 'string' && d.match(/rem$/)) {
+                    val += 'px';
+                }
+                return val;
+            }
+            flexible.px2rem = function(d) {
+                var val = parseFloat(d) / this.rem;
+                if (typeof d === 'string' && d.match(/px$/)) {
+                    val += 'rem';
+                }
+                return val;
+            }
+
+        })(window, window['lib'] || (window['lib'] = {}));
+    </script>
+</head>
+<body>
+
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+<div class="item-section" data-repeat="sections">
+    <div class="item-section_header">
+        <h2><img src="http://xxx.cdn.com/B1PNLZKXXXXXaTXXXXXXXXXXXX-750-481.jpg" alt=""></h2>
+    </div>
+    <ul>
+        <li data-repeat="items" class="flag" role="link" href="#">
+            <a class="figure flag-item" href="#">
+                <img src="https://placeimg.com/350/350/people/grayscale" alt="">
+            </a>
+            <div class="figcaption flag-item">
+                <div class="flag-title"><a href="{itemLink}" title="">Carter's1年式灰色长袖连体衣包脚爬服全棉鲸鱼男婴儿童装115G093</a></div>
+                <div class="flag-price"><span>双11价</span><strong>¥299.06</strong><small>(满400减100)</small></div>
+                <div class="flag-type">1小时内热卖5885件</div>
+                <a class="flag-btn" href="#">马上抢！</a>
+            </div>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>PromiseTest</title>
+
+    </head>
+    <body>
+        <button onclick="testPromise();">Make a promise!</button>
+        <button onclick="requestPromise();">Promise With XMLHttpRequest</button>
+        <div id="log"></div>
+
+        <script type="text/javascript">
+            'use strict';
+            var promiseCount = 0;
+
+            function testPromise() {
+                var thisPromiseCount = ++promiseCount;
+
+                var log = document.getElementById('log');
+                log.insertAdjacentHTML('beforeend', thisPromiseCount +
+                        ') Started (<small>Sync code started</small>)<br/>');
+
+                // We make a new promise: we promise the string 'result' (after waiting 3s)
+                var p1 = new Promise(
+                        // The resolver function is called with the ability to resolve or
+                        // reject the promise
+                        function (resolve, reject) {
+                            log.insertAdjacentHTML('beforeend', thisPromiseCount +
+                                    ') Promise started (<small>Async code started</small>)<br/>');
+                            // This is only an example to create asynchronism
+                            window.setTimeout(
+                                    function () {
+                                        // We fulfill the promise !
+                                        resolve(thisPromiseCount);
+                                    }, 1000);
+                        });
+
+                // We define what to do when the promise is resolved/fulfilled with the then() call,
+                // and the catch() method defines what to do if the promise is rejected.
+                // Log the fulfillment value
+                p1.then(function (val) {
+                    console.log('first then : ' , val);
+                    log.insertAdjacentHTML('beforeend', val + ') Promise fulfilled (<small>Async code terminated</small>)<br/>');
+                    return ++val;
+
+                }).then(function(val) {
+
+                    console.log('second then : ' , val);
+
+                }).catch(
+                                // Log the rejection reason
+                                function (reason) {
+                                    console.log('Handle rejected promise (' + reason + ') here.');
+                                });
+
+                log.insertAdjacentHTML('beforeend', thisPromiseCount +
+                        ') Promise made (<small>Sync code terminated</small>)<br/>');
+            }
+
+            function $http(url){
+
+                // A small example of object
+                var core = {
+
+                    // Method that performs the ajax request
+                    ajax : function (method, url, args) {
+
+                        // Creating a promise
+                        var promise = new Promise( function (resolve, reject) {
+
+                            // Instantiates the XMLHttpRequest
+                            var client = new XMLHttpRequest();
+                            var uri = url;
+
+                            if (args && (method === 'POST' || method === 'PUT')) {
+                                uri += '?';
+                                var argcount = 0;
+                                for (var key in args) {
+                                    if (args.hasOwnProperty(key)) {
+                                        if (argcount++) {
+                                            uri += '&';
+                                        }
+                                        uri += encodeURIComponent(key) + '=' + encodeURIComponent(args[key]);
+                                    }
+                                }
+                            }
+
+                            client.open(method, uri);
+                            client.send();
+
+                            client.onload = function () {
+                                if (this.status >= 200 && this.status < 300) {
+                                    // Performs the function "resolve" when this.status is equal to 2xx
+                                    resolve(this.response);
+                                } else {
+                                    // Performs the function "reject" when this.status is different than 2xx
+                                    reject(this.statusText);
+                                }
+                            };
+                            client.onerror = function () {
+                                reject(this.statusText);
+                            };
+                        });
+
+                        // Return the promise
+                        return promise;
+                    }
+                };
+
+                // Adapter pattern
+                return {
+                    'get' : function(args) {
+                        return core.ajax('GET', url, args);
+                    },
+                    'post' : function(args) {
+                        return core.ajax('POST', url, args);
+                    },
+                    'put' : function(args) {
+                        return core.ajax('PUT', url, args);
+                    },
+                    'delete' : function(args) {
+                        return core.ajax('DELETE', url, args);
+                    }
+                };
+            };
+
+            function requestPromise(){
+                var baiduAPI = 'http://localhost:63342/ES6/promise.html';
+//                var baiduAPI = 'http://www.baidu.com';
+
+                $http(baiduAPI)
+                        .get().then(function(data){
+                            console.log('success:' , data);
+                            return "123"
+                        }).then(function(lastValue){
+                            console.log('last Value : ' , lastValue);
+                        }).catch(function(data){
+                            console.log('catch:' , arguments);
+                        })
+            }
+
+
+
+        </script>
+    </body>
+</html>
