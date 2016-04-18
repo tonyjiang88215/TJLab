@@ -1,0 +1,31 @@
+{
+  "name": "tumblrTJ",
+  "version": "0.0.1",
+  "dependencies": {
+    "flat-ui": "",
+    "react": "",
+    "react-dom": "",
+    "react-router": "",
+    "zepto-modules": ""
+  },
+  "devDependencies": {
+    "babel-core": "",
+    "babel-loader": "",
+    "babel-preset-react": "",
+    "css-loader": "",
+    "html-webpack-plugin": "",
+    "jsx-loader": "^0.13.2",
+    "less-loader": "^2.2.2",
+    "postcss-import": "",
+    "postcss-loader": "",
+    "postcss-reporter": "^1.3.3",
+    "precss": "^1.4.0",
+    "react-hot-loader": "",
+    "style-loader": "",
+    "webpack": "",
+    "webpack-dev-server": ""
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}

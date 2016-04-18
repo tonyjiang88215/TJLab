@@ -1,0 +1,27 @@
+.dashboard {
+  position: relative;padding:10px;
+  .type-select {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+  }
+
+  .db-header{
+    border-bottom:1px solid @borderColor;
+    .header-title{
+      display: inline-block;;
+    }
+
+    .badge{margin-left:8px;vertical-align: middle;}
+
+  }
+
+  .list {
+    padding:10px;
+
+    @import './DashboardItem.less';
+
+  }
+
+}
+
